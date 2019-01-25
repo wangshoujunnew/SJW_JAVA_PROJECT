@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <title>SQL编写</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" type="text/css" href="http://www.bootcss.com/p/layoutit/css/bootstrap-combined.min.css"/>
+    <link rel="stylesheet" type="text/css" href="http://www.bootcss.com/p/layoutit/css/layoutit.css"/>
+    <script src="/bootstrap/js/jquery.min.js"></script>
+    <script src="http://www.bootcss.com/p/layoutit/js/bootstrap.min.js"></script>
+    <!--引入这个页面的js事件-->
+    <script src="/js/table_desc/table_desc.js"></script>
+</head>
+
+<body class="container">
+<h1>写SQL:</h1>
+<input class="btn btn-info" type="button" name="" id="add_project" value="添加项目" />
+<input class="btn btn-info" type="button" name="" id="del_project" value="删除项目" />
+<br /><br />
+<div class="container-fluid project">
+    <div class="row-fluid">
+        <div class="span8">
+            <span class="label table_desc">表结构 : </span> <br />
+            <input type="checkbox" class="form-control" name="select"  /> <span class="label">全选</span>
+            <input type="checkbox" class="form-control" name="select" /> <span class="label">全部取消</span><br/><br/>
+            <div class="table_fileds">
+                <!---->
+            </div>
+            <br/><span class="label">sql : </span><br/><br/>
+            <textarea name="sql" rows="8" style="width: 500px;" class="form-control"></textarea>
+        </div>
+        <div class="span4">
+            <form>
+                <input class="input-medium search-query" type="text" />
+                <button type="button" class="btn submit">查找</button>
+            </form>
+
+            <button class="btn btn-info makesql" type="button">生成SQL</button>
+        </div>
+    </div>
+    <hr />
+</div>
+</body>
+
+</html>

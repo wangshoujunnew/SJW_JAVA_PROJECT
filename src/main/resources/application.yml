@@ -1,0 +1,27 @@
+security:
+  user:
+    name: root
+    password: root
+
+spring:
+  thymeleaf:
+    cache: false
+    mode: HTML5
+  # 配置数据源, 默认有driver, 表结构 zhongguo
+  datasource:
+    url: jdbc:mysql://localhost:3306/test
+    username: root
+    password: root
+    initialize: true
+    tomcat:
+      initial-size: 20
+#  datasource:
+#    url: jdbc:hive2://172.31.86.16:21050/;auth=noSasl
+#    username: shoujunw
+#    password: wsjia369X4
+#    driver-class-name: org.apache.hive.jdbc.HiveDriver
+#    tomcat:
+#      initial-size: 5
+
+
+# 关闭模版引擎的缓存
