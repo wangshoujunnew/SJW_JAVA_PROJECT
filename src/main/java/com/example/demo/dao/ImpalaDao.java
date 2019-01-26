@@ -31,7 +31,9 @@ public class ImpalaDao {
         try {
             return JSON.toJSONString(this.jdbcTemplate.queryForList(sql));
         }catch (Exception e){
-            return "ERROR";
+            // 开发阶段还是需要返回e
+            //            return "ERROR";
+            return e.toString();
         }
     }
 }

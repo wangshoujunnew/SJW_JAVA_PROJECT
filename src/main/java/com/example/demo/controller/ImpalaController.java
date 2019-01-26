@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.dao.MysqlDao;
 import com.example.demo.service.ImpalaService;
+import com.example.demo.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,7 +11,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Map;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 /**
  * created by shoujunw on ${Data}
@@ -33,10 +39,16 @@ public class ImpalaController {
         String remoteHost = request.getRemoteHost();
         System.out.println(remoteHost);
         mysqlDao.insert(remoteHost + ":" + sql);
+        // 1. 以换行符号进行分割
+        String[] sqls = sql.split("\n");
+        Object[] result = Arrays.stream(sqls).filter((sql_sin)->{
+            return ! sql_sin.trim().startsWith("--");
+        }).collect(Collectors.toList()).toArray();
+        String sql_last = Utils.join(result," ");
 
         // 如果sql是以select开头的,那么我只查出前50条sql
-        if(sql.trim().startsWith("select")) {
-            sql = "select * from ({1}) ttttttttttt limit 50".replace("{1}", sql);
+        if(sql_last.trim().startsWith("select")) {
+            sql = "select * from ({1}) ttttttttttt limit 50".replace("{1}", sql_last);
         }
         return impalaService.query(sql);
     }

@@ -33,55 +33,49 @@ $(function() {
             async: false,
             dataType: "json",
             async: false,
-            success: function(data, textStatus, jqXHR) {
-                if(textStatus == 'success') { // textStatus = success
-                    // 这里需要对数据进行输出, 否则输出的是[Object,Object]字符串
-                    // JSON和STR的互相转换JSON.parse(str), json.toJSONString()
-                    // 以及数组到字符串,字符串到数组转化JSON.stringify(jsonObj)
-                    // 字符串替换replace(/},{/g,'},<br/>{')
-                    data.forEach(d => {
-                        obj['output'] += JSON.stringify(d) + '<br/>'
-                    })
+            success: function(data) {
+                // 这里需要对数据进行输出, 否则输出的是[Object,Object]字符串
+                // JSON和STR的互相转换JSON.parse(str), json.toJSONString()
+                // 以及数组到字符串,字符串到数组转化JSON.stringify(jsonObj)
+                // 字符串替换replace(/},{/g,'},<br/>{')
+                data.forEach(d => {
+                    obj['output'] += JSON.stringify(d) + '<br/>'
+                })
+
+                // 如果没有拿到数据,就不追加数据到table中了
+                if(obj['output'] != '') {
+                    // 将输出赋值到当前的output文本框中, 需要将所有的<br>标签替换成换行符号
+                    $(this).next().next().next().val(obj['output'].replace(/<br\/>/g, '\n'))
+                    //						 生成tr
+                    html = '<tr>'
+                    for(var i in obj) {
+                        html += '<td>' + obj[i] + '</td>'
+                    }
+                    html += '</tr>'
+                    $('tbody').append(html)
+
+                    // ====== 后续额外的操作
+                    // 有输出表示是有效的,将此次运行的sql放入到总sql集合中
+                    // all_sql[obj['sql']] = obj['sql']
+                    console.log(all_sql) // 查看一下目前有了多少sql
+                    // 将所有的sql放入到当前有的sql面板中
+                    // 先移除所有的tag,然后添加
+                    var select_tag = $('select')
+                    select_tag.children().remove()
+                    for(var k in all_sql){
+                        var tmp = $('<option value="1">1</option>')
+                        tmp.attr('value',k)
+                        tmp.html(k)
+                        select_tag.append(tmp)
+                    }
+
                 }
+            },
+            error:function(){
+                console.log('没有拿到数据 . . . ')
+                alert('没有拿到数据 ... ')
             }
         });
-        // 如果没有拿到数据,就不追加数据到table中了
-        if(obj['output'] != '') {
-            // 将输出赋值到当前的output文本框中, 需要将所有的<br>标签替换成换行符号
-            $(this).next().next().next().val(obj['output'].replace(/<br\/>/g, '\n'))
-            //						 生成tr
-            html = '<tr>'
-            for(var i in obj) {
-                html += '<td>' + obj[i] + '</td>'
-            }
-            html += '</tr>'
-            $('tbody').append(html)
-
-            // ====== 后续额外的操作
-            // 有输出表示是有效的,将此次运行的sql放入到总sql集合中
-            // all_sql[obj['sql']] = obj['sql']
-            console.log(all_sql) // 查看一下目前有了多少sql
-            // 将所有的sql放入到当前有的sql面板中
-
-//						all_sql.forEach(d=>{
-//							$('select').append($('option').eq(0).clone(true).val(d))
-//							console.log(d)
-//						})
-            // 先移除所有的tag,然后添加
-            var select_tag = $('select')
-            select_tag.children().remove()
-            for(var k in all_sql){
-                var tmp = $('<option value="1">1</option>')
-                tmp.attr('value',k)
-                tmp.html(k)
-                select_tag.append(tmp)
-            }
-
-        } else {
-            $(this).next().next().next().val('没有拿到数据 ... ')
-            console.log('没有拿到数据 ... ')
-        }
-
     })
 
     $('#add_select_frame').click(function() {

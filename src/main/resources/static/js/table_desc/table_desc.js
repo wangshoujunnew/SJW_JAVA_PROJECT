@@ -52,19 +52,12 @@ $(function() {
     //					"Null": "NO",
     //					"Extra": "auto_increment",
     //					"Key": "PRI"
-    //				}, {
-    //					"Field": "title",
-    //					"Type": "varchar(1000)",
-    //					"Null": "YES",
-    //					"Extra": "",
-    //					"Key": ""
     //				}]
 
     // Impala数据表的字段返回来的值不一样,[{"name":"mark"}]
     $('.submit').click(function() {
         table_name = $(this).parent().find('.search-query').val()
         table_files = $(this).parent().parent().parent().find('.table_fileds')
-        //					console.log(table_files)
         checkbox_values = []
         index = 0
         $.ajax({
@@ -75,38 +68,31 @@ $(function() {
             url: "/query",
             // async: false,
             dataType: "json",
-            success: function(data, textStatus, jqXHR) {
-                if(textStatus == 'success') { // textStatus = success
-
-                    console.log(data)
-                    if (data.indexOf('com.mysql.jdbc.exceptions') >= 0) {
-                        $(this).parent().parent().find('.makesql').val('com.mysql.jdbc.exceptions, 表不存在 ... ')
-                        return
-                    }
-
-                    // 这里需要对数据进行输出, 否则输出的是[Object,Object]字符串
-                    // JSON和STR的互相转换JSON.parse(str), json.toJSONString()
-                    // 以及数组到字符串,字符串到数组转化JSON.stringify(jsonObj)
-                    // 字符串替换replace(/},{/g,'},<br/>{')
-                    data.forEach(d => {
-                        checkbox_values[index++] = JSON.stringify(d['name']).replace(/"/g, '')
-                    })
-
-                    // 制作checkbox
-                    // console.log($(this).parent())
-                    //								console.log(table_files)
-                    table_files.children().remove()
-                    checkbox_values.forEach(d => {
-                        checkb = $('<input type="checkbox" class="form-control" name="desc" value="" />').val(d)
-                        textb = $('<span class="label"></span><br/>').html(d)
-                        table_files.append(checkb)
-                    table_files.append(textb)
+            timeout:0, // 毫秒, 请求超时这个怎么测试
+            success: function(data) {
+                // 这里需要对数据进行输出, 否则输出的是[Object,Object]字符串
+                // JSON和STR的互相转换JSON.parse(str), json.toJSONString()
+                // 以及数组到字符串,字符串到数组转化JSON.stringify(jsonObj)
+                // 字符串替换replace(/},{/g,'},<br/>{')
+                // impala返回的列名为d['name'], mysql为Field
+                data.forEach(function(d) {
+                    checkbox_values[index++] = JSON.stringify(d['Field']).replace(/"/g, '')
                 })
-                }else {
-                    console.log("没有拿到表结构 ... 可能表不存在 ... ")
-                    $(this).parent().parent().find('.makesql').val('没有拿到表结构 ... 可能表不存在 ... ')
-                }
+
+                // 制作checkbox
+                // console.log($(this).parent())
+                //								console.log(table_files)
+                table_files.children().remove()
+                checkbox_values.forEach(function(d) {
+                    html_text = $('<div class="checkbox"> <label class="label"> <input type="checkbox" class="form-control" name="desc" value="{0}" /> {0} </label> </div>'.format(d))
+                    table_files.append(html_text)
+                })
+            },
+            error: function() {
+                console.log('fail')
+                alert('表不存在, 或者请求超时 ... ')
             }
+
         });
 
     })

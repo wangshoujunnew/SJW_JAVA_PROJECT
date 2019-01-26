@@ -11,6 +11,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -116,5 +117,16 @@ public class Test {
         int a = 100;
     }
 
+    @org.junit.Test
+    public void demo2() {
+        String[] sqls = "select * from".split(" ");
+
+        Object[] selects = Arrays.stream(sqls).filter((str) -> {
+            return str.startsWith("select");
+        }).collect(Collectors.toList()).toArray();
+        for (int i = 0; i < selects.length; i++) {
+            System.out.println(selects[i]);
+        }
+    }
 
 }

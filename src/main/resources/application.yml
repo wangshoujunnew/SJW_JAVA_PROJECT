@@ -6,7 +6,6 @@ security:
 spring:
   thymeleaf:
     cache: false
-    mode: HTML5
   # 配置数据源, 默认有driver, 表结构 zhongguo
   datasource:
     url: jdbc:mysql://localhost:3306/test
