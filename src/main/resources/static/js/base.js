@@ -20,3 +20,38 @@ String.prototype.format = function(args) {
     }
     return result;
 }
+
+function _log(info) { // info是一个数组
+	if(Object.prototype.toString.call(info) != '[object Array]') {
+		console.log(info)
+	} else {
+		info.map(function(ele) {
+			console.log(ele)
+		})
+	}
+
+}
+
+function _forin(element_a, collect_b) {
+	var a_type = Object.prototype.toString.call(element_a)
+	var b_type = Object.prototype.toString.call(collect_b)
+	_log(a_type)
+	_log(b_type)
+	return collect_b.indexOf(element_a) >= 0
+}
+
+function _dict(collect_a, collect_b) {
+	var obj = {}
+	for(var i = 0; i < collect_a.length; i++) {
+		obj[collect_a[i]] = collect_b[i]
+	}
+	return obj
+}
+
+function _enumarator(collect_a) {
+	var obj = {}
+	collect_a.forEach(function(value, index) {
+		obj[index] = value
+	})
+	return obj
+}

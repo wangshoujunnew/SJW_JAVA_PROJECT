@@ -2,7 +2,9 @@ all_sql = {} // 存放本次查询用到的所有的sql
 $(function() {
 
     // 查询按钮evt
-    $('.select').click(function() {
+    $('.select').click(function(ev) {
+        var evobj = (ev || window.event).target
+        console.log(evobj)
         var obj = {}
         // 查询当前table有多少个tr
         obj['id'] = $('tr').length + 1
@@ -30,9 +32,9 @@ $(function() {
                 "sql": obj['sql']
             },
             url: "/query",
-            async: false,
             dataType: "json",
             async: false,
+            timeout:40, // 毫秒, 请求超时这个怎么测试
             success: function(data) {
                 // 这里需要对数据进行输出, 否则输出的是[Object,Object]字符串
                 // JSON和STR的互相转换JSON.parse(str), json.toJSONString()
@@ -45,7 +47,7 @@ $(function() {
                 // 如果没有拿到数据,就不追加数据到table中了
                 if(obj['output'] != '') {
                     // 将输出赋值到当前的output文本框中, 需要将所有的<br>标签替换成换行符号
-                    $(this).next().next().next().val(obj['output'].replace(/<br\/>/g, '\n'))
+                    $(evobj).next().next().next().val(obj['output'].replace(/<br\/>/g, '\n'))
                     //						 生成tr
                     html = '<tr>'
                     for(var i in obj) {

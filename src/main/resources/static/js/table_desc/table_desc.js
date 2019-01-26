@@ -68,7 +68,7 @@ $(function() {
             url: "/query",
             // async: false,
             dataType: "json",
-            timeout:0, // 毫秒, 请求超时这个怎么测试
+            timeout:5, // 毫秒, 请求超时这个怎么测试
             success: function(data) {
                 // 这里需要对数据进行输出, 否则输出的是[Object,Object]字符串
                 // JSON和STR的互相转换JSON.parse(str), json.toJSONString()
@@ -76,7 +76,7 @@ $(function() {
                 // 字符串替换replace(/},{/g,'},<br/>{')
                 // impala返回的列名为d['name'], mysql为Field
                 data.forEach(function(d) {
-                    checkbox_values[index++] = JSON.stringify(d['Field']).replace(/"/g, '')
+                    checkbox_values[index++] = JSON.stringify(d['name']).replace(/"/g, '')
                 })
 
                 // 制作checkbox
