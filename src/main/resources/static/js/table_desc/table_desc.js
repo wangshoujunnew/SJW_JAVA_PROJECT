@@ -66,9 +66,9 @@ $(function() {
                 "sql": "describe " + table_name
             },
             url: "/query",
-            // async: false,
+            async: false,
             dataType: "json",
-            timeout:5, // 毫秒, 请求超时这个怎么测试
+            timeout:10, // 毫秒, 请求超时这个怎么测试
             success: function(data) {
                 // 这里需要对数据进行输出, 否则输出的是[Object,Object]字符串
                 // JSON和STR的互相转换JSON.parse(str), json.toJSONString()
