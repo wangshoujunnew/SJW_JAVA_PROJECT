@@ -76,7 +76,7 @@ $(function() {
                 // 字符串替换replace(/},{/g,'},<br/>{')
                 // impala返回的列名为d['name'], mysql为Field
                 data.forEach(function(d) {
-                    checkbox_values[index++] = JSON.stringify(d['name']).replace(/"/g, '')
+                    checkbox_values[index++] = String(JSON.stringify(d['name'])).replace(/"/g, '')
                 })
 
                 // 制作checkbox
